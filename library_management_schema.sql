@@ -1,0 +1,19 @@
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE books (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  average_rating DECIMAL(3, 2) DEFAULT 0.0
+);
+
+CREATE TABLE borrowed_books (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  book_id INTEGER REFERENCES books(id) ON DELETE CASCADE,
+  borrowed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  returned_at TIMESTAMP,
+  rating INTEGER CHECK (rating >= 1 AND rating <= 5)
+);
