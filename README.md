@@ -10,11 +10,9 @@ You can set up the PostgreSQL database using either Docker or the provided SQL f
 
 ### Option 2: Run the DDL Script
 
-    ```bash
-
+```bash
 psql -U lib_admin -d library_management -f library_management_schema.sql
-
-    ```
+```
 
 ### Start the Development Server
 
