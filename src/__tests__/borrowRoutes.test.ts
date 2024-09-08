@@ -12,13 +12,11 @@ beforeAll(async () => {
     await AppDataSource.initialize();
     server = app;
 
-    // Create a test user
     const userResponse = await request(server)
         .post("/users")
         .send({ name: "Test User" });
     userId = userResponse.body.id;
 
-    // Create a test book
     const bookResponse = await request(server)
         .post("/books")
         .send({ name: "Test Book" });
@@ -41,15 +39,23 @@ describe("Borrow Routes", () => {
             `/users/${userId}/borrow/${bookId}`
         );
 
-        expect(response.status).toBe(204);
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty(
+            "message",
+            "Book successfully borrowed"
+        );
     });
 
     test("POST /users/:userId/return/:bookId - Return a book", async () => {
         const response = await request(server)
             .post(`/users/${userId}/return/${bookId}`)
-            .send({ rating: 4 });
+            .send({ score: 4 });
 
-        expect(response.status).toBe(204);
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty(
+            "message",
+            "Book returned successfully"
+        );
     });
 
     test("POST /users/:userId/borrow/:bookId - Borrow a non-existent book", async () => {
@@ -57,14 +63,19 @@ describe("Borrow Routes", () => {
             `/users/${userId}/borrow/999999`
         );
 
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty("message", "Book not found");
     });
 
     test("POST /users/:userId/return/:bookId - Return a non-borrowed book", async () => {
         const response = await request(server)
             .post(`/users/${userId}/return/999999`)
-            .send({ rating: 4 });
+            .send({ score: 4 });
 
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty(
+            "message",
+            "Book not found or already returned"
+        );
     });
 });

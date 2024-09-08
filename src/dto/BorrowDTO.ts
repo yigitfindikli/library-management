@@ -25,6 +25,6 @@ export class ReturnBookBodyDTO {
     @IsOptional()
     @IsInt({ message: "rating must be an integer" })
     @Min(1, { message: "Rating must be at least 1" })
-    @Max(5, { message: "Rating must be at most 5" })
-    rating?: number;
+    @Max(10, { message: "Rating must be at most 10" })
+    score?: number;
 }

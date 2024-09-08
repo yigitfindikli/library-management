@@ -9,10 +9,10 @@ export const BorrowBook = async (
         const userId = Number(req.params.userId);
         const bookId = Number(req.params.bookId);
         const result = await borrowBook(userId, bookId);
-        if (!result) {
-            return res.status(404).json({ message: "User or book not found" });
+        if (!result.success) {
+            return res.status(400).json({ message: result.message });
         }
-        return res.status(204).send();
+        return res.status(200).json({ message: result.message });
     } catch (error: any) {
         console.error("Error borrowing book:", error.message);
         return res
@@ -31,10 +31,10 @@ export const ReturnBook = async (
         const { score } = req.body;
 
         const result = await returnBook(userId, bookId, score);
-        if (!result) {
-            return res.status(404).json({ message: "User or book not found" });
+        if (!result.success) {
+            return res.status(400).json({ message: result.message });
         }
-        return res.status(204).send();
+        return res.status(200).json({ message: result.message });
     } catch (error: any) {
         console.error("Error returning book:", error.message);
         return res
