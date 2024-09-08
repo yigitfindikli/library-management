@@ -21,3 +21,11 @@ psql -U lib_admin -d library_management -f library_management_schema.sql
 ```bash
 npm run dev
 ```
+
+### Test
+
+To run the test suite, use the following command:
+
+```bash
+npm test
+```
